@@ -1,8 +1,10 @@
-allowBlocks:
-  [
-    "DIRT", "GRASS", "STONE", "SAND"
-  ]
 allowTools:
+  WOOD_SPADE:
+    - DIRT
+    - GRASS
+    - SAND
+  WOOD_PICKAXE:
+    - STONE
 radius: 2
 consume: true
 forceOnSneaking: false

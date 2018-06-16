@@ -1,6 +1,7 @@
 package blue.feelingso.khaos
 
 import org.bukkit.GameMode
+import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,7 +19,10 @@ class KhaosListener(_khaos :Khaos) : Listener {
         val isConsume = conf.getBoolean("consume", true)
         val forceOnSneaking = conf.getBoolean("forceOnSneaking", false)
 
-        // プレイヤの権限を確認
+        // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
+        val tool = player.inventory.itemInMainHand
+
+        // プレイヤの権限を確認 (今はナシ）
 
         // まずプレイヤ個人が機能を有効にしているか確認
         if (!khaos.getPlayerConf(player.name)) return
@@ -28,8 +32,9 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // スニーク中は無効
         if (player.isSneaking && !forceOnSneaking) return
 
-        // 最初に破壊されたブロックが対象か確認
-        if (!conf.getStringList("allowBlocks").contains(block.type.toString())) return
+        // 最初に破壊されたブロックがそのツールの対象か確認
+        if (!conf.getStringList("allowTools.${tool.type.toString()}").contains(block.type.toString())) return
+
         // 向いている向きとradius設定から破壊する範囲を設定し
         val direction = player.eyeLocation.direction.normalize()
         // 方位を取得する
@@ -42,8 +47,6 @@ class KhaosListener(_khaos :Khaos) : Listener {
             compass = if (direction.x < 0) Compass.WEST else Compass.EAST
         }
 
-        // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
-        val tool = ev.player.inventory.itemInMainHand
         val blockType = block.type
 
         // 最初に破壊したブロックと同じidのブロックを破壊．
