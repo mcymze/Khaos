@@ -1,7 +1,8 @@
 allowBlocks:
   [
-    "DIRT", "COBBLESTONE", "GRASS", "STONE"
+    "DIRT", "GRASS", "STONE", "SAND"
   ]
 allowTools:
 radius: 2
 consume: true
+forceOnSneaking: false

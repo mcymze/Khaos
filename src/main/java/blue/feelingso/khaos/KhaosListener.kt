@@ -16,13 +16,17 @@ class KhaosListener(_khaos :Khaos) : Listener {
         val block = ev.block
         val radius = conf.getInt("radius", 2)
         val isConsume = conf.getBoolean("consume", true)
+        val forceOnSneaking = conf.getBoolean("forceOnSneaking", false)
 
         // プレイヤの権限を確認
 
         // まずプレイヤ個人が機能を有効にしているか確認
         if (!khaos.getPlayerConf(player.name)) return
         // サバイバルか確認
-        if (ev.player.gameMode != GameMode.SURVIVAL) return
+        if (player.gameMode != GameMode.SURVIVAL) return
+
+        // スニーク中は無効
+        if (player.isSneaking && !forceOnSneaking) return
 
         // 最初に破壊されたブロックが対象か確認
         if (!conf.getStringList("allowBlocks").contains(block.type.toString())) return
