@@ -1,0 +1,9 @@
+players:
+  default: false
+allowBlocks:
+  [
+    "DIRT", "COBBLESTONE", "GRASS", "STONE"
+  ]
+allowTools:
+radius: 2
+consume: true
