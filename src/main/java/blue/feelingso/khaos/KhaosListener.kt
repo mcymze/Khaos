@@ -72,6 +72,9 @@ class KhaosListener(_khaos :Khaos) : Listener {
             }
         }
 
+        // それでも1つ分は減らす
+        if (!isConsume) tool.durability = (tool.durability + 1).toShort()
+
         // 上限に達したら壊す
         if (tool.type.maxDurability < tool.durability) {
             player.inventory.remove(tool)
