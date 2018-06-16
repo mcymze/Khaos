@@ -54,20 +54,16 @@ class KhaosListener(_khaos :Khaos) : Listener {
             for (j in 0..radius) {
                 var targetBlock : Block
                 when (compass) {
-                    Compass.EAST ->
-                    {
+                    Compass.EAST -> {
                         targetBlock = block.getRelative(0,i - radius / 2,j - radius / 2)
                     }
-                    Compass.WEST ->
-                    {
+                    Compass.WEST -> {
                         targetBlock = block.getRelative(0,i - radius / 2,j - radius / 2)
                     }
-                    Compass.NORTH ->
-                    {
+                    Compass.NORTH -> {
                         targetBlock = block.getRelative(j - radius / 2,i - radius / 2,0)
                     }
-                    Compass.SOUTH ->
-                    {
+                    Compass.SOUTH -> {
                         targetBlock = block.getRelative(j - radius / 2,i - radius / 2,0)
                     }
                 }
