@@ -1,3 +1,7 @@
 name: Khaos
 version: 1.0.0
 main: blue.feelingso.khaos.Khaos
+commands:
+  khaos:
+    description: Ababa #comiga_anime
+    usage: Abagba #comiga_anime

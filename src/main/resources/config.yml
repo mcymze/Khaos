@@ -1,5 +1,3 @@
-players:
-  default: false
 allowBlocks:
   [
     "DIRT", "COBBLESTONE", "GRASS", "STONE"
