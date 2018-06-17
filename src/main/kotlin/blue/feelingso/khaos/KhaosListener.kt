@@ -6,6 +6,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockDamageEvent
 import kotlin.math.absoluteValue
 
 class KhaosListener(_khaos :Khaos) : Listener {
@@ -88,5 +89,23 @@ class KhaosListener(_khaos :Khaos) : Listener {
         if (tool.type.maxDurability < tool.durability) {
             player.inventory.remove(tool)
         }
+    }
+
+    @EventHandler
+    fun onBlockPunched(ev :BlockDamageEvent) {
+        // なにも持ってない状態で殴ったら機能をトグルする
+
+        // まず設定を見る
+        if (!khaos.getConfigure().getBoolean("switchFromPunch", true)) return
+
+        // 権限を見る
+        if (!ev.player.hasPermission("khaos.switch")) return
+
+        // なにも持っていないか確認
+        if (ev.player.inventory.itemInMainHand.type !== Material.AIR) return
+
+        // 設定を変えて，メッセージを出力して終了
+        khaos.setPlayerConf(ev.player.name, !khaos.getPlayerConf(ev.player.name))
+        ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
     }
 }
