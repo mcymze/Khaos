@@ -8,3 +8,4 @@ allowTools:
 radius: 2
 consume: true
 forceOnSneaking: false
+dontDigFloor: true

@@ -18,6 +18,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
         val radius = conf.getInt("radius", 2)
         val isConsume = conf.getBoolean("consume", true)
         val forceOnSneaking = conf.getBoolean("forceOnSneaking", false)
+        val dontDigFloor = conf.getBoolean("dontDigFloor", true)
 
         // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
         val tool = player.inventory.itemInMainHand
@@ -71,7 +72,8 @@ class KhaosListener(_khaos :Khaos) : Listener {
                     }
                 }
 
-                if (targetBlock.type == blockType) {
+                // 最初に掘ったブロックと同一でかつ，dontDigFloorが有効の場合は足元より上のみ
+                if (targetBlock.type == blockType && (targetBlock.y >= player.location.blockY || !dontDigFloor)) {
                     targetBlock.breakNaturally(tool)
                     if (isConsume) tool.durability = (tool.durability + 1).toShort()
                 }
