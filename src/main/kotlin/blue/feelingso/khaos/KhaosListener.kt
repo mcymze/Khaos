@@ -39,32 +39,35 @@ class KhaosListener(_khaos :Khaos) : Listener {
         val direction = player.eyeLocation.direction.normalize()
         // 方位を取得する
         // x軸が東西，z軸が南北
-        val compass: Compass
-        if (direction.z.absoluteValue > direction.x.absoluteValue) {
-            compass = if (direction.z < 0) Compass.NORTH else Compass.SOUTH
-        }
-        else {
-            compass = if (direction.x < 0) Compass.WEST else Compass.EAST
-        }
+        val compass =
+                if (direction.z.absoluteValue > direction.x.absoluteValue)
+                    if (direction.z < 0)
+                        Compass.NORTH
+                    else
+                        Compass.SOUTH
+                else
+                    if (direction.x < 0)
+                        Compass.WEST
+                    else Compass.EAST
 
         val blockType = block.type
 
         // 最初に破壊したブロックと同じidのブロックを破壊．
         for (i in 0..radius) {
             for (j in 0..radius) {
-                var targetBlock : Block
+                val targetBlock =
                 when (compass) {
                     Compass.EAST -> {
-                        targetBlock = block.getRelative(0,i - radius / 2,j - radius / 2)
+                        block.getRelative(0,i - radius / 2,j - radius / 2)
                     }
                     Compass.WEST -> {
-                        targetBlock = block.getRelative(0,i - radius / 2,j - radius / 2)
+                        block.getRelative(0,i - radius / 2,j - radius / 2)
                     }
                     Compass.NORTH -> {
-                        targetBlock = block.getRelative(j - radius / 2,i - radius / 2,0)
+                        block.getRelative(j - radius / 2,i - radius / 2,0)
                     }
                     Compass.SOUTH -> {
-                        targetBlock = block.getRelative(j - radius / 2,i - radius / 2,0)
+                        block.getRelative(j - radius / 2,i - radius / 2,0)
                     }
                 }
 

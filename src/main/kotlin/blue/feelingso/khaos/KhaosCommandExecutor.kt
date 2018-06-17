@@ -10,7 +10,7 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean
     {
         if (args != null && sender != null) {
-            if (args.size > 0) {
+            if (args.isNotEmpty()) {
                 when (args[0]) {
                     "reload" -> {
                         khaos.reloadConfig()
