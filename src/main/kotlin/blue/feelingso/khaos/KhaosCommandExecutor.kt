@@ -12,26 +12,57 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
         if (args != null && sender != null) {
             if (args.isNotEmpty()) {
                 when (args[0]) {
-                    "reload" -> {
-                        khaos.reloadConfig()
-                        khaos.loadPlayerConf()
-                        sender.sendMessage("[Khaos] reloaded!")
-                    }
-                    "switch" -> {
-                        khaos.setPlayerConf(sender.name, !khaos.getPlayerConf(sender.name))
-                        sender.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}")
-                    }
-                    "status" -> {
-                        sender.sendMessage("[Khaos] Status: ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}")
-                    }
+                    "reload", "r" -> reload(sender)
+                    "switch", "sw" -> switch(sender)
+                    "status", "sts" -> status(sender)
+                    "help", "-h" -> help(sender)
                 }
             }
-            else
-            {
-                sender.sendMessage("[Khaos] Usage: khaos <reload/switch/status>")
+            else {
+                help(sender)
             }
         }
 
         return true
+    }
+
+    private fun reload(sender: CommandSender)
+    {
+        if (sender.hasPermission("khaos.reload")) {
+            khaos.reloadConfig()
+            khaos.loadPlayerConf()
+            sender.sendMessage("[Khaos] reloaded!")
+        }
+        else {
+            sender.sendMessage("[Khaos] You don't have a permission to execute this command")
+        }
+    }
+
+    private fun switch(sender: CommandSender) {
+        if (sender.hasPermission("khaos.switch")) {
+            khaos.setPlayerConf(sender.name, !khaos.getPlayerConf(sender.name))
+            sender.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}")
+        }
+        else {
+            sender.sendMessage("[Khaos] You don't have a permission to execute this command")
+        }
+    }
+
+    private fun status(sender: CommandSender) {
+        sender.sendMessage(
+                if (sender.hasPermission("khaos.status"))
+                    "[Khaos] Status: ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}"
+                else
+                    "[Khaos] You don't have a permission to execute this command"
+        )
+    }
+
+    private  fun help(sender: CommandSender) {
+        sender.sendMessage(
+                if (sender.hasPermission("khaos.status"))
+                    "[Khaos] Usage: khaos <reload/switch/status>"
+                else
+                    "[Khaos] You don't have a permission to execute this command"
+        )
     }
 }

@@ -23,7 +23,8 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
         val tool = player.inventory.itemInMainHand
 
-        // プレイヤの権限を確認 (今はナシ）
+        // プレイヤの権限を確認
+        if (!player.hasPermission("khaos.dig")) return
 
         // まずプレイヤ個人が機能を有効にしているか確認
         if (!khaos.getPlayerConf(player.name)) return
