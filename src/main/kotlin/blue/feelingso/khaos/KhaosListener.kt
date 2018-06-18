@@ -2,14 +2,12 @@ package blue.feelingso.khaos
 
 import org.bukkit.GameMode
 import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockDamageEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import java.util.*
 import kotlin.math.absoluteValue
 
 class KhaosListener(_khaos :Khaos) : Listener {
