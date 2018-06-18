@@ -6,6 +6,8 @@ allowTools:
   WOOD_PICKAXE:
     - STONE
 radius: 2
+near: 0
+far: 3
 consume: true
 forceOnSneaking: false
 dontDigFloor: true

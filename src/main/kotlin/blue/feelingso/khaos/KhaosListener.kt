@@ -22,6 +22,10 @@ class KhaosListener(_khaos :Khaos) : Listener {
         val forceOnSneaking = conf.getBoolean("forceOnSneaking", false)
         val dontDigFloor = conf.getBoolean("dontDigFloor", true)
 
+        // 手前にいくつ，奥にいくつ掘るかという設定．nearは負数でfarは正数であって欲しい．
+        val near = if (conf.getInt("near", 0) < 0) conf.getInt("near", 0) else conf.getInt("near", 0) * -1
+        val far = if (conf.getInt("far", 2) < 0) conf.getInt("far", 2) * -1 else conf.getInt("far", 2)
+
         // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
         val tool = player.inventory.itemInMainHand
 
@@ -59,26 +63,28 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // 最初に破壊したブロックと同じidのブロックを破壊．
         for (i in 0..radius) {
             for (j in 0..radius) {
-                val targetBlock =
-                when (compass) {
-                    Compass.EAST -> {
-                        block.getRelative(0,i - radius / 2,j - radius / 2)
+                for (k in near..(far - 1))
+                {
+                    val targetBlock =
+                            when (compass) {
+                                Compass.EAST -> {
+                                    block.getRelative(k,i - radius / 2,j - radius / 2)
+                                }
+                                Compass.WEST -> {
+                                    block.getRelative(-k,i - radius / 2,j - radius / 2)
+                                }
+                                Compass.NORTH -> {
+                                    block.getRelative(j - radius / 2,i - radius / 2, -k)
+                                }
+                                Compass.SOUTH -> {
+                                    block.getRelative(j - radius / 2,i - radius / 2, k)
+                                }
+                            }
+                    // 最初に掘ったブロックと同一でかつ，dontDigFloorが有効の場合は足元より上のみ
+                    if (targetBlock.type == blockType && (targetBlock.y >= player.location.blockY || !dontDigFloor)) {
+                        targetBlock.breakNaturally(tool)
+                        if (isConsume) tool.durability = (tool.durability + 1).toShort()
                     }
-                    Compass.WEST -> {
-                        block.getRelative(0,i - radius / 2,j - radius / 2)
-                    }
-                    Compass.NORTH -> {
-                        block.getRelative(j - radius / 2,i - radius / 2,0)
-                    }
-                    Compass.SOUTH -> {
-                        block.getRelative(j - radius / 2,i - radius / 2,0)
-                    }
-                }
-
-                // 最初に掘ったブロックと同一でかつ，dontDigFloorが有効の場合は足元より上のみ
-                if (targetBlock.type == blockType && (targetBlock.y >= player.location.blockY || !dontDigFloor)) {
-                    targetBlock.breakNaturally(tool)
-                    if (isConsume) tool.durability = (tool.durability + 1).toShort()
                 }
             }
         }
