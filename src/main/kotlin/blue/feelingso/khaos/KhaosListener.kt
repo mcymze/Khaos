@@ -11,6 +11,7 @@ import kotlin.math.absoluteValue
 
 class KhaosListener(_khaos :Khaos) : Listener {
     private val khaos = _khaos
+
     @EventHandler
     fun onBlockBroken(ev :BlockBreakEvent) {
         val conf = khaos.getConfigure()

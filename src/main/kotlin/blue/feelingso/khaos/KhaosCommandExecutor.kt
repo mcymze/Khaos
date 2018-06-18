@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender
 
 class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
     private val khaos = _khaos
-    private var playerConf : MutableMap<String, Boolean?> = mutableMapOf()
+
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean
     {
         if (args != null && sender != null) {
