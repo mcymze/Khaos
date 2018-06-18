@@ -176,6 +176,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
                 Material.JUNGLE_DOOR,
                 Material.SPRUCE_DOOR,
                 Material.TRAP_DOOR,
+                Material.IRON_TRAPDOOR,
                 Material.WOODEN_DOOR,
                 Material.STONE_BUTTON,
                 Material.WOOD_BUTTON,
@@ -207,7 +208,20 @@ class KhaosListener(_khaos :Khaos) : Listener {
                 Material.BIRCH_FENCE_GATE,
                 Material.DARK_OAK_FENCE_GATE,
                 Material.JUNGLE_FENCE_GATE,
-                Material.SPRUCE_FENCE_GATE
+                Material.SPRUCE_FENCE_GATE,
+                Material.DAYLIGHT_DETECTOR,
+                Material.DAYLIGHT_DETECTOR_INVERTED,
+                Material.REDSTONE_COMPARATOR,
+                Material.REDSTONE_COMPARATOR_OFF,
+                Material.REDSTONE_COMPARATOR_ON,
+                Material.DIODE,
+                Material.DIODE_BLOCK_OFF,
+                Material.DIODE_BLOCK_ON,
+                Material.SADDLE,
+                Material.BED_BLOCK,
+                Material.SIGN,
+                Material.SIGN_POST,
+                Material.WALL_SIGN
         ).contains(material)
     }
 }
