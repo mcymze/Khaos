@@ -1,7 +1,33 @@
 name: Khaos
-version: 1.0.0
+version: 1.0.1
 main: blue.feelingso.khaos.Khaos
 commands:
   khaos:
+    aliases: [ks, kh]
     description: Ababa #comiga_anime
     usage: Abagba #comiga_anime
+    permission: khaos.dig
+permissions:
+  khaos.*:
+    default: op
+    children:
+      khaos.dig: true
+      khaos.reload: true
+      khaos.status: true
+      khaos.switch: true
+      khaos.help: true
+  khaos.dig:
+    default: true
+    description: Dig main feature
+  khaos.status:
+    default: true
+    description: Check player own status
+  khaos.switch:
+    default: true
+    description: Switch dig status
+  khaos.reload:
+    default: op
+    description: reload configure files
+  khaos.help:
+    default: true
+    description: help

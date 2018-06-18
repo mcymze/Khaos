@@ -5,8 +5,6 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import org.bukkit.configuration.file.YamlConfiguration
 
-
-
 class Khaos : JavaPlugin() {
     private var _playerConf = YamlConfiguration.loadConfiguration(File(dataFolder, "player.yml"))
 
@@ -25,10 +23,6 @@ class Khaos : JavaPlugin() {
 
     public fun loadConfigure() {
         reloadConfig()
-    }
-
-    public fun setConfigure(conf :FileConfiguration) {
-
     }
 
     public fun loadPlayerConf() {
