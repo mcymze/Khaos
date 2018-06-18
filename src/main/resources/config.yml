@@ -12,3 +12,4 @@ consume: true
 forceOnSneaking: false
 dontDigFloor: true
 switchFromPunch: true
+switchRightClick: true
