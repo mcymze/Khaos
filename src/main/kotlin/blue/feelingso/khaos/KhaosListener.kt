@@ -123,8 +123,11 @@ class KhaosListener(_khaos :Khaos) : Listener {
 
         val player = ev.player
 
-        // 道具を持った状態で右クリした際に機能を切り替える．
-        if (ev.action !== Action.RIGHT_CLICK_BLOCK && ev.action !== Action.RIGHT_CLICK_AIR) return
+        when(ev.action) {
+            Action.RIGHT_CLICK_BLOCK -> if (isUsefulItem(ev.clickedBlock.type)) return
+            Action.RIGHT_CLICK_AIR -> {}
+            else -> return
+        }
 
         // 前回の実行などを見る（1度に2回呼ばれるのが謎）
         if (timer.get(player, "lastPlayerRightClick")) return
@@ -144,5 +147,67 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // 設定を変えて，メッセージを出力して終了
         khaos.setPlayerConf(player.name, !khaos.getPlayerConf(player.name))
         player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(player.name)) "ON" else "OFF"}")
+    }
+
+    private fun isUsefulItem(material :Material) :Boolean {
+        return mutableListOf(
+                Material.WORKBENCH,
+                Material.CHEST,
+                Material.ENDER_CHEST,
+                Material.TRAPPED_CHEST,
+                Material.FURNACE,
+                Material.BURNING_FURNACE,
+                Material.DROPPER,
+                Material.DISPENSER,
+                Material.MINECART,
+                Material.BREWING_STAND,
+                Material.ENCHANTMENT_TABLE,
+                Material.ANVIL,
+                Material.BEACON,
+                Material.COMMAND_MINECART,
+                Material.EXPLOSIVE_MINECART,
+                Material.HOPPER_MINECART,
+                Material.POWERED_MINECART,
+                Material.STORAGE_MINECART,
+                Material.ACACIA_DOOR,
+                Material.BIRCH_DOOR,
+                Material.DARK_OAK_DOOR,
+                Material.IRON_DOOR,
+                Material.JUNGLE_DOOR,
+                Material.SPRUCE_DOOR,
+                Material.TRAP_DOOR,
+                Material.WOODEN_DOOR,
+                Material.STONE_BUTTON,
+                Material.WOOD_BUTTON,
+                Material.LEVER,
+                Material.BLACK_SHULKER_BOX,
+                Material.BLUE_SHULKER_BOX,
+                Material.BROWN_SHULKER_BOX,
+                Material.CYAN_SHULKER_BOX,
+                Material.GRAY_SHULKER_BOX,
+                Material.GREEN_SHULKER_BOX,
+                Material.LIGHT_BLUE_SHULKER_BOX,
+                Material.LIME_SHULKER_BOX,
+                Material.MAGENTA_SHULKER_BOX,
+                Material.ORANGE_SHULKER_BOX,
+                Material.PINK_SHULKER_BOX,
+                Material.PURPLE_SHULKER_BOX,
+                Material.RED_SHULKER_BOX,
+                Material.SILVER_SHULKER_BOX,
+                Material.WHITE_SHULKER_BOX,
+                Material.YELLOW_SHULKER_BOX,
+                Material.BOAT,
+                Material.BOAT_ACACIA,
+                Material.BOAT_BIRCH,
+                Material.BOAT_DARK_OAK,
+                Material.BOAT_JUNGLE,
+                Material.BOAT_SPRUCE,
+                Material.FENCE_GATE,
+                Material.ACACIA_FENCE_GATE,
+                Material.BIRCH_FENCE_GATE,
+                Material.DARK_OAK_FENCE_GATE,
+                Material.JUNGLE_FENCE_GATE,
+                Material.SPRUCE_FENCE_GATE
+        ).contains(material)
     }
 }
