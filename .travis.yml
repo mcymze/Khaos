@@ -3,5 +3,9 @@ language: java
 sudo: required
 dist: trusty
 
+dependencies:
+  pre:
+    - chmod -x ./gradlew
+
 jdk:
   - oraclejdk8
