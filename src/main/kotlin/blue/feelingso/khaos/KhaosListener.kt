@@ -9,10 +9,12 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockDamageEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import java.util.*
 import kotlin.math.absoluteValue
 
 class KhaosListener(_khaos :Khaos) : Listener {
     private val khaos = _khaos
+    private val timer = PlayerTimer(_khaos)
 
     @EventHandler
     fun onBlockBroken(ev :BlockBreakEvent) {
@@ -118,23 +120,31 @@ class KhaosListener(_khaos :Khaos) : Listener {
         ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
     }
 
-    @EventHandler
+    @EventHandler()
     fun onPlayerRightClick(ev :PlayerInteractEvent) {
+
+        val player = ev.player
 
         // 道具を持った状態で右クリした際に機能を切り替える．
         if (ev.action !== Action.RIGHT_CLICK_BLOCK && ev.action !== Action.RIGHT_CLICK_AIR) return
+
+        // 前回の実行などを見る（1度に2回呼ばれるのが謎）
+        if (timer.get(player, "lastPlayerRightClick")) return
+
+        // タイマをセット
+        timer.set(player, "lastPlayerRightClick")
 
         // 設定を見る
         if (!khaos.getConfigure().getBoolean("switchRightClick", true)) return
 
         // 権限を見る
-        if (!ev.player.hasPermission("khaos.switch")) return
+        if (!player.hasPermission("khaos.switch")) return
 
         // 耐久値のあるものを除外
-        if (ev.player.inventory.itemInMainHand.type.maxDurability === 0.toShort()) return
+        if (player.inventory.itemInMainHand.type.maxDurability === 0.toShort()) return
 
         // 設定を変えて，メッセージを出力して終了
-        khaos.setPlayerConf(ev.player.name, !khaos.getPlayerConf(ev.player.name))
-        ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
+        khaos.setPlayerConf(player.name, !khaos.getPlayerConf(player.name))
+        player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(player.name)) "ON" else "OFF"}")
     }
 }
