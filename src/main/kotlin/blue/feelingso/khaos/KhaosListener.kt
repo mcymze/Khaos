@@ -104,6 +104,22 @@ class KhaosListener(_khaos :Khaos) : Listener {
     fun onBlockPunched(ev :BlockDamageEvent) {
         // なにも持ってない状態で殴ったら機能をトグルする
 
+        if (
+                ev.player.inventory.itemInMainHand.type === Material.AIR
+                && khaos.getConfigure().getBoolean("switchFromPunch", true)
+                && ev.player.hasPermission("khaos.switch")
+        ) {
+            // 設定を変えて，メッセージを出力して終了
+            khaos.setPlayerConf(ev.player.name, !khaos.getPlayerConf(ev.player.name))
+            ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
+        }
+        else if (
+                ev.player.inventory.itemInMainHand.type === Material.STICK
+                && ev.player.hasPermission("khaos.debug")
+        ) {
+            ev.player.sendMessage("Knocked " + ev.block.type.toString())
+        }
+        /*
         // まず設定を見る
         if (!khaos.getConfigure().getBoolean("switchFromPunch", true)) return
 
@@ -116,6 +132,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // 設定を変えて，メッセージを出力して終了
         khaos.setPlayerConf(ev.player.name, !khaos.getPlayerConf(ev.player.name))
         ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
+        */
     }
 
     @EventHandler()
@@ -151,35 +168,45 @@ class KhaosListener(_khaos :Khaos) : Listener {
 
     private fun isUsefulItem(material :Material) :Boolean {
         return mutableListOf(
-                Material.WORKBENCH,
+                // だるい
+                // Material.WORKBENCH,
                 Material.CHEST,
                 Material.ENDER_CHEST,
                 Material.TRAPPED_CHEST,
                 Material.FURNACE,
-                Material.BURNING_FURNACE,
+                // Material.BURNING_FURNACE,
                 Material.DROPPER,
                 Material.DISPENSER,
                 Material.MINECART,
                 Material.BREWING_STAND,
-                Material.ENCHANTMENT_TABLE,
+                Material.ENCHANTING_TABLE,
                 Material.ANVIL,
                 Material.BEACON,
-                Material.COMMAND_MINECART,
-                Material.EXPLOSIVE_MINECART,
+                Material.COMMAND_BLOCK_MINECART,
+                Material.TNT_MINECART,
                 Material.HOPPER_MINECART,
-                Material.POWERED_MINECART,
-                Material.STORAGE_MINECART,
                 Material.ACACIA_DOOR,
                 Material.BIRCH_DOOR,
                 Material.DARK_OAK_DOOR,
                 Material.IRON_DOOR,
                 Material.JUNGLE_DOOR,
                 Material.SPRUCE_DOOR,
-                Material.TRAP_DOOR,
+                Material.OAK_TRAPDOOR,
+                Material.SPRUCE_TRAPDOOR,
+                Material.JUNGLE_TRAPDOOR,
+                Material.DARK_OAK_TRAPDOOR,
+                Material.ACACIA_TRAPDOOR,
+                Material.BIRCH_TRAPDOOR,
                 Material.IRON_TRAPDOOR,
-                Material.WOODEN_DOOR,
                 Material.STONE_BUTTON,
-                Material.WOOD_BUTTON,
+                Material.OAK_BUTTON,
+                Material.DARK_OAK_BUTTON,
+                Material.BIRCH_BUTTON,
+                Material.DARK_OAK_BUTTON,
+                Material.ACACIA_BUTTON,
+                Material.SPRUCE_BUTTON,
+                Material.JUNGLE_TRAPDOOR,
+                Material.STONE_BUTTON,
                 Material.LEVER,
                 Material.BLACK_SHULKER_BOX,
                 Material.BLUE_SHULKER_BOX,
@@ -194,33 +221,26 @@ class KhaosListener(_khaos :Khaos) : Listener {
                 Material.PINK_SHULKER_BOX,
                 Material.PURPLE_SHULKER_BOX,
                 Material.RED_SHULKER_BOX,
-                Material.SILVER_SHULKER_BOX,
+                Material.LIGHT_GRAY_SHULKER_BOX,
                 Material.WHITE_SHULKER_BOX,
                 Material.YELLOW_SHULKER_BOX,
-                Material.BOAT,
-                Material.BOAT_ACACIA,
-                Material.BOAT_BIRCH,
-                Material.BOAT_DARK_OAK,
-                Material.BOAT_JUNGLE,
-                Material.BOAT_SPRUCE,
-                Material.FENCE_GATE,
+                Material.ACACIA_BOAT,
+                Material.OAK_BOAT,
+                Material.DARK_OAK_BOAT,
+                Material.BIRCH_BOAT,
+                Material.JUNGLE_BOAT,
+                Material.JUNGLE_BOAT,
+                Material.SPRUCE_BOAT,
                 Material.ACACIA_FENCE_GATE,
                 Material.BIRCH_FENCE_GATE,
                 Material.DARK_OAK_FENCE_GATE,
                 Material.JUNGLE_FENCE_GATE,
                 Material.SPRUCE_FENCE_GATE,
                 Material.DAYLIGHT_DETECTOR,
-                Material.DAYLIGHT_DETECTOR_INVERTED,
-                Material.REDSTONE_COMPARATOR,
-                Material.REDSTONE_COMPARATOR_OFF,
-                Material.REDSTONE_COMPARATOR_ON,
-                Material.DIODE,
-                Material.DIODE_BLOCK_OFF,
-                Material.DIODE_BLOCK_ON,
+                Material.COMPARATOR,
                 Material.SADDLE,
-                Material.BED_BLOCK,
+                Material.BEDROCK,
                 Material.SIGN,
-                Material.SIGN_POST,
                 Material.WALL_SIGN
         ).contains(material)
     }
