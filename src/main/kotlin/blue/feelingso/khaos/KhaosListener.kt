@@ -60,7 +60,8 @@ class KhaosListener(_khaos :Khaos) : Listener {
                         Compass.WEST
                     else Compass.EAST
 
-        val blockType = block.type
+        //val blockType = block.type
+        val blockTypes = conf.getStringList("allowTools.${tool.type.toString()}");
 
         // 最初に破壊したブロックと同じidのブロックを破壊．
         for (i in 0..radius) {
@@ -83,7 +84,8 @@ class KhaosListener(_khaos :Khaos) : Listener {
                                 }
                             }
                     // 最初に掘ったブロックと同一でかつ，dontDigFloorが有効の場合は足元より上のみ
-                    if (targetBlock.type == blockType && (targetBlock.y >= player.location.blockY || !dontDigFloor)) {
+                    //if (targetBlock.type == blockType && (targetBlock.y >= player.location.blockY || !dontDigFloor)) {
+                    if (blockTypes.contains(targetBlock.type.toString()) && (targetBlock.y >= player.location.blockY || !dontDigFloor)) {
                         targetBlock.breakNaturally(tool)
                         if (isConsume) tool.durability = (tool.durability + 1).toShort()
                     }
