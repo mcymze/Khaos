@@ -36,6 +36,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
 
         // まずプレイヤ個人が機能を有効にしているか確認
         if (!khaos.getPlayerConf(player.name)) return
+
         // サバイバルか確認
         if (player.gameMode != GameMode.SURVIVAL) return
 
