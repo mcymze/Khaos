@@ -30,7 +30,7 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
     {
         if (sender.hasPermission("khaos.reload")) {
             khaos.reloadConfig()
-            khaos.loadPlayerConf()
+            khaos.playerConfig.reload()
             sender.sendMessage("[Khaos] reloaded!")
         }
         else {
@@ -40,8 +40,8 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
 
     private fun switch(sender: CommandSender) {
         if (sender.hasPermission("khaos.switch")) {
-            khaos.setPlayerConf(sender.name, !khaos.getPlayerConf(sender.name))
-            sender.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}")
+            khaos.playerConfig.flip(sender.name)
+            sender.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(sender.name)) "ON" else "OFF"}")
         }
         else {
             sender.sendMessage("[Khaos] You don't have a permission to execute this command")
@@ -51,7 +51,7 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
     private fun status(sender: CommandSender) {
         sender.sendMessage(
                 if (sender.hasPermission("khaos.status"))
-                    "[Khaos] Status: ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}"
+                    "[Khaos] Status: ${if (khaos.playerConfig.isActive(sender.name)) "ON" else "OFF"}"
                 else
                     "[Khaos] You don't have a permission to execute this command"
         )

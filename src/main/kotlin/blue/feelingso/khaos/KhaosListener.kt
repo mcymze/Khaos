@@ -9,13 +9,13 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import kotlin.math.absoluteValue
 
-class KhaosListener(_khaos :Khaos) : Listener {
-    private val khaos = _khaos
-    private val timer = PlayerTimer(_khaos)
+class KhaosListener(khaos :Khaos) : Listener {
+    private val khaos = khaos
+    private val timer = PlayerTimer(khaos)
 
     @EventHandler
     fun onBlockBroken(ev :BlockBreakEvent) {
-        val conf = khaos.getConfigure()
+        val conf = khaos.khaosConfig
         val player = ev.player
         val block = ev.block
 
@@ -26,7 +26,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
         if (!player.hasPermission("khaos.dig")) return
 
         // まずプレイヤ個人が機能を有効にしているか確認
-        if (!khaos.getPlayerConf(player.name)) return
+        if (!khaos.playerConfig.isActive(player.name)) return
 
         // サバイバルか確認
         if (player.gameMode != GameMode.SURVIVAL) return
@@ -94,7 +94,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
     @EventHandler
     fun onPlayerRightClick(ev :PlayerInteractEvent) {
 
-        val conf = khaos.getConfigure()
+        val conf = khaos.khaosConfig
         val player = ev.player
         val tool = player.inventory.itemInMainHand
         val clickedBlock = ev.clickedBlock
@@ -122,7 +122,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
         if (clickedBlock.type == Material.GRASS_BLOCK && tool.type.isShovel()) return
 
         // 設定を変えて，メッセージを出力して終了
-        khaos.setPlayerConf(player.name, !khaos.getPlayerConf(player.name))
-        player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(player.name)) "ON" else "OFF"}")
+        khaos.playerConfig.flip(player.name)
+        player.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(player.name)) "ON" else "OFF"}")
     }
 }
