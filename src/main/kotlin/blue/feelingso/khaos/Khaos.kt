@@ -17,8 +17,8 @@ class Khaos : JavaPlugin() {
     override fun onDisable() {
     }
 
-    fun getConfigure() : FileConfiguration {
-        return config
+    fun getConfigure() : KhaosConfig {
+        return KhaosConfig(config)
     }
 
     fun loadPlayerConf() {
