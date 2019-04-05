@@ -1,12 +1,12 @@
 allowTools:
   WOODEN_SHOVEL:
     - DIRT
-    - GRASS
+    - GRASS_BLOCK
     - SAND
     - GRAVEL
   STONE_SHOVEL:
     - DIRT
-    - GRASS
+    - GRASS_BLOCK
     - SAND
     - GRAVEL
   WOODEN_PICKAXE:
