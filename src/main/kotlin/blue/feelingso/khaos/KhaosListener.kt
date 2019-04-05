@@ -23,7 +23,7 @@ class KhaosListener(khaos :Khaos) : Listener {
         val tool = player.inventory.itemInMainHand
 
         // プレイヤの権限を確認
-        if (!player.hasPermission("khaos.dig")) return
+        if (!player.hasPermissionDig()) return
 
         // まずプレイヤ個人が機能を有効にしているか確認
         if (!khaos.playerConfig.isActive(player.name)) return
@@ -116,7 +116,7 @@ class KhaosListener(khaos :Khaos) : Listener {
         if (!conf.switchRightClick) return
 
         // 権限を見る
-        if (!player.hasPermission("khaos.switch")) return
+        if (!player.hasPermissionSwitch()) return
 
         // スコップで草ブロックを殴ったときに除外
         if (clickedBlock.type == Material.GRASS_BLOCK && tool.type.isShovel()) return
