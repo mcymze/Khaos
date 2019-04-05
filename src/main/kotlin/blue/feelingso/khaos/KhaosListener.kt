@@ -168,6 +168,9 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // 耐久値のあるものを除外
         if (itemInMainHand.type.maxDurability == 0.toShort()) return
 
+        // 右クリで使用するタイプのアイテムか?
+        if (itemInMainHand.type.isTool()) return
+
         // スコップで土を殴ったときに除外
         if (clickedBlock.type == Material.GRASS_BLOCK && itemInMainHand.type.isHoe()) return
 

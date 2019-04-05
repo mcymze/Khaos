@@ -28,3 +28,12 @@ fun Material.isPlowable(): Boolean {
     if (this == Material.DIRT) return true
     return false
 }
+
+// 右クリで使うようなツールか?
+fun Material.isTool() :Boolean {
+    return (when (this) {
+        Material.FLINT_AND_STEEL -> true
+        Material.SHEARS -> true
+        else -> false
+    })
+}
