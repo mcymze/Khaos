@@ -44,7 +44,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
         if (player.isSneaking && !forceOnSneaking) return
 
         // 最初に破壊されたブロックがそのツールの対象か確認
-        if (!conf.getStringList("allowTools.${tool.type.toString()}").contains(block.type.toString())) return
+        if (!conf.getStringList("allowTools.${tool.type}").contains(block.type.toString())) return
 
         // 向いている向きとradius設定から破壊する範囲を設定し
         val direction = player.eyeLocation.direction.normalize()
@@ -62,7 +62,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
                     else Compass.EAST
 
         //val blockType = block.type
-        val blockTypes = conf.getStringList("allowTools.${tool.type.toString()}");
+        val blockTypes = conf.getStringList("allowTools.${tool.type}");
 
         // 最初に破壊したブロックと同じidのブロックを破壊．
         for (i in 0..radius) {
@@ -163,6 +163,12 @@ class KhaosListener(_khaos :Khaos) : Listener {
 
         // 耐久値のあるものを除外
         if (player.inventory.itemInMainHand.type.maxDurability == 0.toShort()) return
+
+        // スコップで土を殴ったときに除外
+        if (ev.clickedBlock.type == Material.GRASS_BLOCK && player.inventory.itemInMainHand.type.isHoe()) return
+
+        // クワで耕したときに除外
+        if (ev.clickedBlock.type.isPlowable() && player.inventory.itemInMainHand.type.isShovel()) return
 
         // 設定を変えて，メッセージを出力して終了
         khaos.setPlayerConf(player.name, !khaos.getPlayerConf(player.name))
