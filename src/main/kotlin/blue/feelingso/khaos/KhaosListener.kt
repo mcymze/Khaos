@@ -141,12 +141,14 @@ class KhaosListener(_khaos :Khaos) : Listener {
     @EventHandler()
     fun onPlayerRightClick(ev :PlayerInteractEvent) {
 
+        val conf = khaos.getConfigure()
         val player = ev.player
+        val tool = player.inventory.itemInMainHand
         val clickedBlock = ev.clickedBlock
 
-
         when(ev.action) {
-            Action.RIGHT_CLICK_BLOCK -> if (isUsefulItem(clickedBlock.type)) return
+            // allowToolsに記載されていないツールとブロックのセットなら無視する
+            Action.RIGHT_CLICK_BLOCK -> if (!conf.getStringList("allowTools.${tool.type}").contains(clickedBlock.type.toString())) return
             Action.RIGHT_CLICK_AIR -> {}
             else -> return
         }
@@ -163,19 +165,8 @@ class KhaosListener(_khaos :Khaos) : Listener {
         // 権限を見る
         if (!player.hasPermission("khaos.switch")) return
 
-        val itemInMainHand = player.inventory.itemInMainHand
-
-        // 耐久値のあるものを除外
-        if (itemInMainHand.type.maxDurability == 0.toShort()) return
-
-        // 右クリで使用するタイプのアイテムか?
-        if (itemInMainHand.type.isTool()) return
-
-        // スコップで土を殴ったときに除外
-        if (clickedBlock.type == Material.GRASS_BLOCK && itemInMainHand.type.isHoe()) return
-
-        // クワで耕したときに除外
-        if (clickedBlock.type.isPlowable() && itemInMainHand.type.isShovel()) return
+        // スコップで草ブロックを殴ったときに除外
+        if (clickedBlock.type == Material.GRASS_BLOCK && tool.type.isShovel()) return
 
         // 設定を変えて，メッセージを出力して終了
         khaos.setPlayerConf(player.name, !khaos.getPlayerConf(player.name))
