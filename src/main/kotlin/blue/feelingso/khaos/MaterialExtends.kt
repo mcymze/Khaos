@@ -4,34 +4,40 @@ import org.bukkit.Material
 
 // このアイテムはスコップか?
 fun Material.isShovel() :Boolean {
-    if (this == Material.WOODEN_SHOVEL) return true
-    if (this == Material.STONE_SHOVEL) return true
-    if (this == Material.IRON_SHOVEL) return true
-    if (this == Material.GOLDEN_SHOVEL) return true
-    if (this == Material.DIAMOND_SHOVEL) return true
-    return false
+    return (when(this) {
+        Material.WOODEN_SHOVEL -> true
+        Material.STONE_SHOVEL -> true
+        Material.IRON_SHOVEL -> true
+        Material.GOLDEN_SHOVEL -> true
+        Material.DIAMOND_SHOVEL -> true
+        else -> false
+    })
 }
 
 // このアイテムはクワか?
 fun Material.isHoe(): Boolean {
-    if (this == Material.WOODEN_HOE) return true
-    if (this == Material.STONE_HOE) return true
-    if (this == Material.IRON_HOE) return true
-    if (this == Material.GOLDEN_HOE) return true
-    if (this == Material.DIAMOND_HOE) return true
-    return false
+    return (when(this) {
+        Material.WOODEN_HOE -> true
+        Material.STONE_HOE -> true
+        Material.IRON_HOE -> true
+        Material.GOLDEN_HOE -> true
+        Material.DIAMOND_HOE -> true
+        else -> false
+    })
 }
 
 // このブロックは耕せるか?
 fun Material.isPlowable(): Boolean {
-    if (this == Material.GRASS_BLOCK) return true
-    if (this == Material.DIRT) return true
-    return false
+    return (when(this) {
+        Material.GRASS_BLOCK -> true
+        Material.DIRT -> true
+        else -> false
+    })
 }
 
 // 右クリで使うようなツールか?
 fun Material.isTool() :Boolean {
-    return (when (this) {
+    return (when(this) {
         Material.FLINT_AND_STEEL -> true
         Material.SHEARS -> true
         else -> false
