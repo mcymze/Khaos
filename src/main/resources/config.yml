@@ -25,5 +25,4 @@ far: 3
 consume: true
 forceOnSneaking: false
 dontDigFloor: true
-switchFromPunch: false
 switchRightClick: true

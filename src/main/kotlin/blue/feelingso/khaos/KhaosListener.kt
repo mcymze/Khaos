@@ -103,41 +103,6 @@ class KhaosListener(_khaos :Khaos) : Listener {
         }
     }
 
-    @EventHandler
-    fun onBlockPunched(ev :BlockDamageEvent) {
-        // なにも持ってない状態で殴ったら機能をトグルする
-
-        if (
-                ev.player.inventory.itemInMainHand.type === Material.AIR
-                && khaos.getConfigure().getBoolean("switchFromPunch", true)
-                && ev.player.hasPermission("khaos.switch")
-        ) {
-            // 設定を変えて，メッセージを出力して終了
-            khaos.setPlayerConf(ev.player.name, !khaos.getPlayerConf(ev.player.name))
-            ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
-        }
-        else if (
-                ev.player.inventory.itemInMainHand.type === Material.STICK
-                && ev.player.hasPermission("khaos.debug")
-        ) {
-            ev.player.sendMessage("Knocked " + ev.block.type.toString())
-        }
-        /*
-        // まず設定を見る
-        if (!khaos.getConfigure().getBoolean("switchFromPunch", true)) return
-
-        // 権限を見る
-        if (!ev.player.hasPermission("khaos.switch")) return
-
-        // なにも持っていないか確認
-        if (ev.player.inventory.itemInMainHand.type !== Material.AIR) return
-
-        // 設定を変えて，メッセージを出力して終了
-        khaos.setPlayerConf(ev.player.name, !khaos.getPlayerConf(ev.player.name))
-        ev.player.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(ev.player.name)) "ON" else "OFF"}")
-        */
-    }
-
     @EventHandler()
     fun onPlayerRightClick(ev :PlayerInteractEvent) {
 
