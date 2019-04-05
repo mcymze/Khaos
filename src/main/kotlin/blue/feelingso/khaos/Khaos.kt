@@ -17,23 +17,19 @@ class Khaos : JavaPlugin() {
     override fun onDisable() {
     }
 
-    public fun getConfigure() : FileConfiguration {
+    fun getConfigure() : FileConfiguration {
         return config
     }
 
-    public fun loadConfigure() {
-        reloadConfig()
-    }
-
-    public fun loadPlayerConf() {
+    fun loadPlayerConf() {
         _playerConf = YamlConfiguration.loadConfiguration(File(dataFolder, "player.yml"))
     }
 
-    public fun getPlayerConf(name :String) : Boolean {
+    fun getPlayerConf(name :String) : Boolean {
         return _playerConf.getBoolean(name, _playerConf.getBoolean("default", false))
     }
 
-    public fun setPlayerConf(name :String, flag :Boolean) {
+    fun setPlayerConf(name :String, flag :Boolean) {
         _playerConf.set(name, flag)
         _playerConf.save(File(dataFolder, "player.yml"))
     }
