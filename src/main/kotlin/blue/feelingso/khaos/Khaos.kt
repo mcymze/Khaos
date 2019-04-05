@@ -5,7 +5,7 @@ import java.io.File
 
 class Khaos : JavaPlugin() {
     val playerConfig = KhaosPlayerConfig(File(dataFolder, "player.yml"))
-    val khaosConfig = KhaosConfig(config)
+    var khaosConfig = KhaosConfig(config)
 
     override fun onEnable() {
         saveDefaultConfig()
@@ -14,5 +14,10 @@ class Khaos : JavaPlugin() {
     }
 
     override fun onDisable() {
+    }
+
+    override fun reloadConfig() {
+        super.reloadConfig()
+        khaosConfig = KhaosConfig(config)
     }
 }
