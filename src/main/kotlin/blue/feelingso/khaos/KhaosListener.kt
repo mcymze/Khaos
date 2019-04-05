@@ -54,23 +54,23 @@ class KhaosListener(khaos :Khaos) : Listener {
                     else Compass.EAST
 
         // 最初に破壊したブロックと同じidのブロックを破壊．
-        for (i in 0..conf.radius) {
-            for (j in 0..conf.radius) {
+        for (i in 1 - conf.radius until conf.radius) {
+            for (j in 1 - conf.radius until conf.radius) {
                 for (k in conf.near..(conf.far - 1))
                 {
                     val targetBlock =
                             when (compass) {
                                 Compass.EAST -> {
-                                    block.getRelative(k,i - conf.radius / 2,j - conf.radius / 2)
+                                    block.getRelative(k, i, j)
                                 }
                                 Compass.WEST -> {
-                                    block.getRelative(-k,i - conf.radius / 2,j - conf.radius / 2)
+                                    block.getRelative(-k, i, j)
                                 }
                                 Compass.NORTH -> {
-                                    block.getRelative(j - conf.radius / 2,i - conf.radius / 2, -k)
+                                    block.getRelative(j, i, -k)
                                 }
                                 Compass.SOUTH -> {
-                                    block.getRelative(j - conf.radius / 2,i - conf.radius / 2, k)
+                                    block.getRelative(j, i, k)
                                 }
                             }
 
