@@ -103,7 +103,7 @@ class KhaosListener(_khaos :Khaos) : Listener {
         }
     }
 
-    @EventHandler()
+    @EventHandler
     fun onPlayerRightClick(ev :PlayerInteractEvent) {
 
         val conf = khaos.getConfigure()
