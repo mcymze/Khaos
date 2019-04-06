@@ -4,8 +4,8 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
-class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
-    private val khaos = _khaos
+class KhaosCommandExecutor(khaos: Khaos) : CommandExecutor {
+    private val khaos = khaos
 
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean
     {
@@ -28,9 +28,9 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
 
     private fun reload(sender: CommandSender)
     {
-        if (sender.hasPermission("khaos.reload")) {
+        if (sender.hasPermissionReload()) {
             khaos.reloadConfig()
-            khaos.loadPlayerConf()
+            khaos.playerConfig.reload()
             sender.sendMessage("[Khaos] reloaded!")
         }
         else {
@@ -39,9 +39,9 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
     }
 
     private fun switch(sender: CommandSender) {
-        if (sender.hasPermission("khaos.switch")) {
-            khaos.setPlayerConf(sender.name, !khaos.getPlayerConf(sender.name))
-            sender.sendMessage("[Khaos] Switched to ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}")
+        if (sender.hasPermissionSwitch()) {
+            khaos.playerConfig.flip(sender.name)
+            sender.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(sender.name)) "ON" else "OFF"}")
         }
         else {
             sender.sendMessage("[Khaos] You don't have a permission to execute this command")
@@ -50,8 +50,8 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
 
     private fun status(sender: CommandSender) {
         sender.sendMessage(
-                if (sender.hasPermission("khaos.status"))
-                    "[Khaos] Status: ${if (khaos.getPlayerConf(sender.name)) "ON" else "OFF"}"
+                if (sender.hasPermissionGetStatus())
+                    "[Khaos] Status: ${if (khaos.playerConfig.isActive(sender.name)) "ON" else "OFF"}"
                 else
                     "[Khaos] You don't have a permission to execute this command"
         )
@@ -59,7 +59,7 @@ class KhaosCommandExecutor(_khaos: Khaos) : CommandExecutor {
 
     private  fun help(sender: CommandSender) {
         sender.sendMessage(
-                if (sender.hasPermission("khaos.status"))
+                if (sender.hasPermissionGetStatus())
                     "[Khaos] Usage: khaos <reload/switch/status>"
                 else
                     "[Khaos] You don't have a permission to execute this command"

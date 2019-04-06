@@ -1,0 +1,10 @@
+language: java
+
+sudo: required
+dist: trusty
+
+before_install:
+  - sudo chmod +x ./gradlew
+
+jdk:
+  - oraclejdk8

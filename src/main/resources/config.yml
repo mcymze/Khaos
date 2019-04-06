@@ -1,15 +1,28 @@
 allowTools:
-  WOOD_SPADE:
+  WOODEN_SHOVEL:
     - DIRT
-    - GRASS
+    - GRASS_BLOCK
     - SAND
-  WOOD_PICKAXE:
+    - GRAVEL
+  STONE_SHOVEL:
+    - DIRT
+    - GRASS_BLOCK
+    - SAND
+    - GRAVEL
+  WOODEN_PICKAXE:
     - STONE
+    - GRANITE
+    - DIORITE
+    - ANDESITE
+  STONE_PICKAXE:
+    - STONE
+    - GRANITE
+    - DIORITE
+    - ANDESITE
 radius: 2
 near: 0
 far: 3
 consume: true
 forceOnSneaking: false
 dontDigFloor: true
-switchFromPunch: false
 switchRightClick: true
