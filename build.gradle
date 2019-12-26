@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         classpath "net.md-5:bungeecord-chat:1.10-SNAPSHOT"
-        classpath group: 'org.spigotmc', name: 'spigot-api', version: '1.13-R0.1-SNAPSHOT'
+        classpath group: 'org.spigotmc', name: 'spigot-api', version: '1.15-R0.1-SNAPSHOT'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
