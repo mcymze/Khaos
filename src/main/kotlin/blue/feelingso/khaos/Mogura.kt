@@ -35,7 +35,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
         // 最初に破壊したブロックと同じidのブロックを破壊．
         for (i in 1 - conf.radius until conf.radius) {
             for (j in 1 - conf.radius until conf.radius) {
-                for (k in conf.near..(conf.far - 1))
+                for (k in conf.near until conf.far)
                 {
                     val targetBlock =
                             when (compass) {
