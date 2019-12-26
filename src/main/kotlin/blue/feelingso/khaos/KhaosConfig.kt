@@ -3,6 +3,8 @@ package blue.feelingso.khaos
 import org.bukkit.configuration.file.FileConfiguration
 import java.lang.Math.abs
 import org.bukkit.Material
+import org.bukkit.block.Block
+import org.bukkit.inventory.ItemStack
 
 class KhaosConfig(bukkitConfig : FileConfiguration){
     private val bukkitConfig = bukkitConfig
@@ -31,4 +33,6 @@ class KhaosConfig(bukkitConfig : FileConfiguration){
     fun getAllowedItems(tool: Material): List<String> {
         return bukkitConfig.getStringList("allowTools.$tool")
     }
+
+    fun isTargetBlockByTool(tool: ItemStack, block: Block) = getAllowedItems(tool.type).contains(block.type.toString())
 }

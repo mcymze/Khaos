@@ -7,7 +7,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import kotlin.math.absoluteValue
 
 class KhaosListener(khaos :Khaos) : Listener {
     private val khaos = khaos
@@ -17,7 +16,6 @@ class KhaosListener(khaos :Khaos) : Listener {
     fun onBlockBroken(ev :BlockBreakEvent) {
         val conf = khaos.khaosConfig
         val player = ev.player
-        val block = ev.block
 
         // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
         val tool = player.inventory.itemInMainHand
@@ -34,61 +32,11 @@ class KhaosListener(khaos :Khaos) : Listener {
         // スニーク中は無効
         if (player.isSneaking && conf.forceOnSneaking) return
 
-        // 最初に破壊されたブロックがそのツールの対象か確認
-        val blockTypes = conf.getAllowedItems(tool.type)
-        if (!blockTypes.contains(block.type.toString())) return
+        val mogura = Mogura(player, ev.block, tool, conf)
 
-        // 向いている向きとradius設定から破壊する範囲を設定し
-        val direction = player.eyeLocation.direction.normalize()
-        // 方位を取得する
-        // x軸が東西，z軸が南北
-        val compass =
-                if (direction.z.absoluteValue > direction.x.absoluteValue)
-                    if (direction.z < 0)
-                        Compass.NORTH
-                    else
-                        Compass.SOUTH
-                else
-                    if (direction.x < 0)
-                        Compass.WEST
-                    else Compass.EAST
+        if (!mogura.runnable) return
 
-        // 最初に破壊したブロックと同じidのブロックを破壊．
-        for (i in 1 - conf.radius until conf.radius) {
-            for (j in 1 - conf.radius until conf.radius) {
-                for (k in conf.near..(conf.far - 1))
-                {
-                    val targetBlock =
-                            when (compass) {
-                                Compass.EAST -> {
-                                    block.getRelative(k, i, j)
-                                }
-                                Compass.WEST -> {
-                                    block.getRelative(-k, i, j)
-                                }
-                                Compass.NORTH -> {
-                                    block.getRelative(j, i, -k)
-                                }
-                                Compass.SOUTH -> {
-                                    block.getRelative(j, i, k)
-                                }
-                            }
-
-                    if (blockTypes.contains(targetBlock.type.toString()) && (targetBlock.y >= player.location.blockY || !conf.dontDigFloor)) {
-                        targetBlock.breakNaturally(tool)
-                        if (conf.consume) tool.durability = (tool.durability + 1).toShort()
-                    }
-                }
-            }
-        }
-
-        // それでも1つ分は減らす
-        if (!conf.consume) tool.durability = (tool.durability + 1).toShort()
-
-        // 上限に達したら壊す
-        if (tool.type.maxDurability < tool.durability) {
-            player.inventory.remove(tool)
-        }
+        mogura.run()
     }
 
     @EventHandler
