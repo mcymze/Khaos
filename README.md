@@ -1,6 +1,6 @@
 # Khaos
 
-[![Build Status](https://travis-ci.org/lm9/Khaos.svg?branch=develop)](https://travis-ci.org/lm9/Khaos)
+[![Build Status](https://travis-ci.org/ekuinox/Khaos.svg)](https://travis-ci.org/ekuinox/Khaos)
 
 SpigotでDigAllを再現したくて作りました．
 
