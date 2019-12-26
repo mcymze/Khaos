@@ -4,6 +4,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import kotlin.math.absoluteValue
+import kotlin.math.ceil
 
 /**
  * Digging blocks likes Mogura
@@ -52,7 +53,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
                                 }
                             }
 
-                    if (blockTypes.contains(targetBlock.type.toString()) && (targetBlock.y >= executor.location.blockY || !conf.dontDigFloor)) {
+                    if (canDigBlock(block)) {
                         targetBlock.breakNaturally(tool)
                         if (conf.consume) tool.durability = (tool.durability + 1).toShort()
                     }
@@ -67,5 +68,19 @@ class Mogura(private val executor: Player, private val block: Block, private val
         if (tool.type.maxDurability < tool.durability) {
             executor.inventory.remove(tool)
         }
+    }
+
+    // 対象のブロックが自分の足元より高い位置にあるか
+    //　草の道やソウルサンドのような少し低いブロックの上で掘った際のことを考慮し、プレイヤの高さを切り上げている
+    private fun isHigherThanFloor(block: Block) = block.y > ceil(executor.location.y)
+
+    private fun canDigBlock(block: Block): Boolean {
+        // そのブロックはツールの対象に含まれているか
+        if (!conf.isTargetBlockByTool(tool, block)) return false
+
+        if (!conf.dontDigFloor) return true
+
+        // 床下を掘らないという設定の場合、対象のブロックが自分の足元より高いか
+        return isHigherThanFloor(block)
     }
 }
