@@ -71,7 +71,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
 
     // 対象のブロックが自分の足元より高い位置にあるか
     //　草の道やソウルサンドのような少し低いブロックの上で掘った際のことを考慮し、プレイヤの高さを切り上げている
-    private fun isHigherThanFloor(block: Block) = block.y > ceil(executor.location.y)
+    private fun isHigherThanFloor(block: Block) = block.y >= ceil(executor.location.y)
 
     private fun canDigBlock(block: Block): Boolean {
         // そのブロックはツールの対象に含まれているか
