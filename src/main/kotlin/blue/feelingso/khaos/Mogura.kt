@@ -67,8 +67,13 @@ class Mogura(private val executor: Player, private val block: Block, private val
 
         // 耐久を減らす
         val damage = if (conf.consume) targetBlocks.size.toDouble() else 1.0
-        
+
         tool.durability = (tool.durability + damage).toShort()
+
+        // 上限に達したら壊す
+        if (tool.type.maxDurability < tool.durability) {
+            executor.inventory.remove(tool)
+        }
     }
 
     // 対象のブロックが自分の足元より高い位置にあるか
