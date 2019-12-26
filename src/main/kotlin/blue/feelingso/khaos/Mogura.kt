@@ -53,7 +53,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
                                 }
                             }
 
-                    if (canDigBlock(block)) {
+                    if (canDigBlock(targetBlock)) {
                         targetBlock.breakNaturally(tool)
                         if (conf.consume) tool.durability = (tool.durability + 1).toShort()
                     }
