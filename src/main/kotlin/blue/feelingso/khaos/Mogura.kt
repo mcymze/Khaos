@@ -1,6 +1,7 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
+import org.bukkit.entity.Damageable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import kotlin.math.absoluteValue
@@ -32,7 +33,9 @@ class Mogura(private val executor: Player, private val block: Block, private val
                         Compass.WEST
                     else Compass.EAST
 
-        // 最初に破壊したブロックと同じidのブロックを破壊．
+        // 対象になるブロックをここに格納する
+        val targetBlocks = mutableListOf<Block>()
+
         for (i in 1 - conf.radius until conf.radius) {
             for (j in 1 - conf.radius until conf.radius) {
                 for (k in conf.near until conf.far)
@@ -54,20 +57,16 @@ class Mogura(private val executor: Player, private val block: Block, private val
                             }
 
                     if (canDigBlock(targetBlock)) {
-                        targetBlock.breakNaturally(tool)
-                        if (conf.consume) tool.durability = (tool.durability + 1).toShort()
+                        targetBlocks.add(targetBlock)
                     }
                 }
             }
         }
 
-        // それでも1つ分は減らす
-        if (!conf.consume) tool.durability = (tool.durability + 1).toShort()
+        targetBlocks.forEach { it.breakNaturally(tool) }
 
-        // 上限に達したら壊す
-        if (tool.type.maxDurability < tool.durability) {
-            executor.inventory.remove(tool)
-        }
+        // 耐久を減らす
+        (tool.itemMeta as Damageable).damage(if (conf.consume) targetBlocks.size.toDouble() else 1.0)
     }
 
     // 対象のブロックが自分の足元より高い位置にあるか
