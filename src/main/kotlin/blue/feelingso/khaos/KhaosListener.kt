@@ -7,7 +7,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import kotlin.math.absoluteValue
 
 class KhaosListener(khaos :Khaos) : Listener {
     private val khaos = khaos
@@ -17,7 +16,6 @@ class KhaosListener(khaos :Khaos) : Listener {
     fun onBlockBroken(ev :BlockBreakEvent) {
         val conf = khaos.khaosConfig
         val player = ev.player
-        val block = ev.block
 
         // 破壊したブロックの数だけアイテムの耐久度を減らす（コード上は増やす）
         val tool = player.inventory.itemInMainHand
