@@ -45,7 +45,7 @@ class KhaosListener(khaos :Khaos) : Listener {
         val conf = khaos.khaosConfig
         val player = ev.player
         val tool = player.inventory.itemInMainHand
-        val clickedBlock = ev.clickedBlock
+        val clickedBlock = ev.clickedBlock ?: return
 
         when(ev.action) {
             // allowToolsに記載されていないツールとブロックのセットなら無視する
