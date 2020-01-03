@@ -1,5 +1,5 @@
 name: Khaos
-version: 1.0.4
+version: 1.0.5
 main: blue.feelingso.khaos.Khaos
 api-version: "1.15"
 commands:
