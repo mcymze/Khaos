@@ -1,9 +1,10 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
-import org.bukkit.entity.Damageable
+import org.bukkit.inventory.meta.Damageable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
@@ -66,12 +67,16 @@ class Mogura(private val executor: Player, private val block: Block, private val
         targetBlocks.forEach { it.breakNaturally(tool) }
 
         // 耐久を減らす
-        val damage = if (conf.consume) targetBlocks.size.toDouble() else 1.0
+        val damage = if (conf.consume) targetBlocks.size else 1
 
-        tool.durability = (tool.durability + damage).toShort()
+        val damageable = tool.itemMeta as Damageable
 
-        // 上限に達したら壊す
-        if (tool.type.maxDurability < tool.durability) {
+        damageable.damage = damageable.damage + damage
+
+        tool.itemMeta = damageable as ItemMeta
+
+        // 耐久上限超えたら壊します
+        if (damageable.damage > tool.type.maxDurability) {
             executor.inventory.remove(tool)
         }
     }
