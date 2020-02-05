@@ -1,5 +1,6 @@
 package blue.feelingso.khaos
 
+import org.bukkit.NamespacedKey
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -19,5 +20,9 @@ class Khaos : JavaPlugin() {
     override fun reloadConfig() {
         super.reloadConfig()
         khaosConfig = KhaosConfig(config)
+    }
+
+    fun makeNamespacedKey(key: String): NamespacedKey {
+        return NamespacedKey(this, key)
     }
 }
