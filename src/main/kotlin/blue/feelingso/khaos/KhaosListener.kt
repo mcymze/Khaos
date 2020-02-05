@@ -24,7 +24,7 @@ class KhaosListener(khaos :Khaos) : Listener {
         if (!player.hasPermissionDig()) return
 
         // まずプレイヤ個人が機能を有効にしているか確認
-        if (!khaos.playerConfig.isActive(player.name)) return
+        if (!khaos.playerConfig.isActive(player)) return
 
         // サバイバルか確認
         if (player.gameMode != GameMode.SURVIVAL) return
@@ -70,7 +70,7 @@ class KhaosListener(khaos :Khaos) : Listener {
         if (clickedBlock.type == Material.GRASS_BLOCK && tool.type.isShovel()) return
 
         // 設定を変えて，メッセージを出力して終了
-        khaos.playerConfig.flip(player.name)
-        player.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(player.name)) "ON" else "OFF"}")
+        khaos.playerConfig.flip(player)
+        player.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(player)) "ON" else "OFF"}")
     }
 }
