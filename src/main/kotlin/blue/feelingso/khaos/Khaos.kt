@@ -2,7 +2,6 @@ package blue.feelingso.khaos
 
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 
 class Khaos : JavaPlugin() {
     val playerConfig = KhaosPlayerConfig(this)
