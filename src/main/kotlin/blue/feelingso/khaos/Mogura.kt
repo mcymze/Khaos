@@ -68,7 +68,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
         targetBlocks.forEach { it.breakNaturally(tool) }
 
         // 耐久を減らす
-        val damage = if (conf.consume) targetBlocks.size else 1
+        val damage = calculateDamage(tool, if (conf.consume) targetBlocks.size else 1)
 
         val damageable = tool.itemMeta as Damageable
 
