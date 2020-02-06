@@ -1,7 +1,7 @@
 package blue.feelingso.khaos
 
 import org.bukkit.configuration.file.FileConfiguration
-import java.lang.Math.abs
+import kotlin.math.abs
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.inventory.ItemStack
@@ -22,7 +22,7 @@ class KhaosConfig(bukkitConfig : FileConfiguration){
         get() = bukkitConfig.getBoolean("dontDigFloor", true)
 
     val near: Int // 手前に掘る距離（負数）
-        get() = - abs(bukkitConfig.getInt("near", 0))
+        get() = -abs(bukkitConfig.getInt("near", 0))
 
     val far: Int // 奥に掘る距離
         get() = abs(bukkitConfig.getInt("far", 2))
