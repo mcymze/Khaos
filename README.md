@@ -1,7 +1,6 @@
 # Khaos
 
-[![Actions Status](https://github.com/ekuinox/Khaos/workflows/Khaos/badge.svg)](https://github.com/ekuinox/Khaos/actions)
-[![Build Status](https://travis-ci.org/ekuinox/Khaos.svg)](https://travis-ci.org/ekuinox/Khaos)
+[![Actions Status](https://github.com/mcymze/Khaos/workflows/Khaos/badge.svg)](https://github.com/mcymze/Khaos/actions)
 
 SpigotでDigAllを再現したくて作りました．
 
