@@ -98,8 +98,12 @@ class Mogura(private val executor: Player, private val block: Block, private val
 
     // ItemStackと破壊個数からダメージを計算する
     private fun calculateDamage(item: ItemStack, count: Int): Int {
-        val ratio = 1.0f / (item.getEnchantmentLevel(Enchantment.DURABILITY) + 1)
-        if (ratio == 1.0f) return count
+        // 耐久エンチャントのレベル 無しの場合は0が返る
+        val enchantmentLevel = item.getEnchantmentLevel(Enchantment.DURABILITY)
+        // エンチャントが無い場合は確率の計算を回す必要がないのでそのまま個数を返却する
+        if (enchantmentLevel == 0) return count
+        val ratio = 1.0f / (enchantmentLevel + 1)
+        // count回計算して個数を返す
         return (0 until count).filter { Math.random().toFloat() <= ratio } .size
     }
 }
