@@ -1,6 +1,7 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -93,5 +94,12 @@ class Mogura(private val executor: Player, private val block: Block, private val
 
         // 床下を掘らないという設定の場合、対象のブロックが自分の足元より高いか
         return isHigherThanFloor(block)
+    }
+
+    // ItemStackと破壊個数からダメージを計算する
+    private fun calculateDamage(item: ItemStack, count: Int): Int {
+        val ratio = 1.0f / (item.getEnchantmentLevel(Enchantment.DURABILITY) + 1)
+        if (ratio == 1.0f) return count
+        return (0 until count).filter { Math.random().toFloat() < ratio } .size
     }
 }
