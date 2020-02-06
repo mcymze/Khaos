@@ -1,6 +1,7 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -67,7 +68,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
         targetBlocks.forEach { it.breakNaturally(tool) }
 
         // 耐久を減らす
-        val damage = if (conf.consume) targetBlocks.size else 1
+        val damage = calculateDamage(tool, if (conf.consume) targetBlocks.size else 1)
 
         val damageable = tool.itemMeta as Damageable
 
@@ -93,5 +94,16 @@ class Mogura(private val executor: Player, private val block: Block, private val
 
         // 床下を掘らないという設定の場合、対象のブロックが自分の足元より高いか
         return isHigherThanFloor(block)
+    }
+
+    // ItemStackと破壊個数からダメージを計算する
+    private fun calculateDamage(item: ItemStack, count: Int): Int {
+        // 耐久エンチャントのレベル 無しの場合は0が返る
+        val enchantmentLevel = item.getEnchantmentLevel(Enchantment.DURABILITY)
+        // エンチャントが無い場合は確率の計算を回す必要がないのでそのまま個数を返却する
+        if (enchantmentLevel == 0) return count
+        val ratio = 1.0f / (enchantmentLevel + 1)
+        // count回計算して個数を返す
+        return (0 until count).filter { Math.random().toFloat() <= ratio } .size
     }
 }
