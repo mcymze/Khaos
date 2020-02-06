@@ -3,11 +3,12 @@ package blue.feelingso.khaos
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 class KhaosCommandExecutor(khaos: Khaos) : CommandExecutor {
     private val khaos = khaos
 
-    override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean
     {
         if (args != null && sender != null) {
             if (args.isNotEmpty()) {
@@ -30,7 +31,6 @@ class KhaosCommandExecutor(khaos: Khaos) : CommandExecutor {
     {
         if (sender.hasPermissionReload()) {
             khaos.reloadConfig()
-            khaos.playerConfig.reload()
             sender.sendMessage("[Khaos] reloaded!")
         }
         else {
@@ -39,9 +39,9 @@ class KhaosCommandExecutor(khaos: Khaos) : CommandExecutor {
     }
 
     private fun switch(sender: CommandSender) {
-        if (sender.hasPermissionSwitch()) {
-            khaos.playerConfig.flip(sender.name)
-            sender.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(sender.name)) "ON" else "OFF"}")
+        if (sender.hasPermissionSwitch() && sender is Player) {
+            khaos.playerConfig.flip(sender)
+            sender.sendMessage("[Khaos] Switched to ${if (khaos.playerConfig.isActive(sender)) "ON" else "OFF"}")
         }
         else {
             sender.sendMessage("[Khaos] You don't have a permission to execute this command")
@@ -50,8 +50,8 @@ class KhaosCommandExecutor(khaos: Khaos) : CommandExecutor {
 
     private fun status(sender: CommandSender) {
         sender.sendMessage(
-                if (sender.hasPermissionGetStatus())
-                    "[Khaos] Status: ${if (khaos.playerConfig.isActive(sender.name)) "ON" else "OFF"}"
+                if (sender.hasPermissionGetStatus() && sender is Player)
+                    "[Khaos] Status: ${if (khaos.playerConfig.isActive(sender)) "ON" else "OFF"}"
                 else
                     "[Khaos] You don't have a permission to execute this command"
         )

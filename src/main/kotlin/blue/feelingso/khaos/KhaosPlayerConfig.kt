@@ -1,35 +1,22 @@
 package blue.feelingso.khaos
 
-import org.bukkit.configuration.file.YamlConfiguration
-import java.io.File
+import org.bukkit.entity.Player
+import org.bukkit.persistence.PersistentDataType
 
 // Khaosの主機能を有効状態を管理する
-class KhaosPlayerConfig(configFile: File) {
-    private val configFile = configFile
-    private val config = YamlConfiguration.loadConfiguration(configFile)
+class KhaosPlayerConfig(plugin: Khaos) {
+    private val namespacedKey = plugin.makeNamespacedKey(KEY)
 
-    // デフォルト値
-    val default: Boolean
-        get() = config.getBoolean("default", false)
-
-    // 機能が有効か取得する
-    fun isActive(name: String): Boolean {
-        return config.getBoolean(name, default)
+    fun isActive(player: Player): Boolean {
+        return player.persistentDataContainer.getOrDefault(namespacedKey, DATA_TYPE, 0) != 0
     }
 
-    // 切り替えを行う
-    fun setActive(name: String, value: Boolean) {
-        config.set(name, value)
-        config.save(configFile)
+    fun flip(player: Player) {
+        player.persistentDataContainer.set(namespacedKey, DATA_TYPE, if (isActive(player)) 0 else 1)
     }
 
-    // 状態を反転させる
-    fun flip(name: String) {
-        setActive(name, !isActive(name))
-    }
-
-    // ファイルの再読込
-    fun reload() {
-        config.load(configFile)
+    companion object {
+        private val DATA_TYPE = PersistentDataType.INTEGER
+        private const val KEY = "ACTIVE"
     }
 }
