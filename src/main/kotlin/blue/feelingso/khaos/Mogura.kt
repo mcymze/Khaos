@@ -100,6 +100,6 @@ class Mogura(private val executor: Player, private val block: Block, private val
     private fun calculateDamage(item: ItemStack, count: Int): Int {
         val ratio = 1.0f / (item.getEnchantmentLevel(Enchantment.DURABILITY) + 1)
         if (ratio == 1.0f) return count
-        return (0 until count).filter { Math.random().toFloat() < ratio } .size
+        return (0 until count).filter { Math.random().toFloat() <= ratio } .size
     }
 }
