@@ -1,3 +1,6 @@
+# Allows tools and target blocks.
+# These types are associated org.bukkit.Material
+# https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 allowTools:
   WOODEN_SHOVEL:
     - DIRT
@@ -22,7 +25,12 @@ allowTools:
 radius: 2
 near: 0
 far: 3
+# Takes damage to tool only for broken blocks count.
 consume: true
+# This plugin do not work when player is sneaking.
+# If you want ignore this, please make true below option.
 forceOnSneaking: false
+# To save you from lava swimming.
 dontDigFloor: true
+# Toggles feature enable or disable by right clicking block.
 switchRightClick: true
