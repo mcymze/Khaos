@@ -1,6 +1,8 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
+import org.bukkit.block.BlockFace
+import org.bukkit.block.BlockFace.*
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.entity.Player
@@ -74,6 +76,19 @@ class Mogura(private val executor: Player, private val block: Block, private val
         if (damageable.damage > tool.type.maxDurability) {
             executor.inventory.remove(tool)
         }
+    }
+
+    // プレイヤの向きから、getRelative関数を定める
+    private fun makeGetRelativeFunc(): ((Block, Int, Int, Int) -> Block)? = when(executor.facing) {
+        EAST, EAST_NORTH_EAST, EAST_SOUTH_EAST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(x, y, z)}
+        WEST, WEST_NORTH_WEST, WEST_SOUTH_WEST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(-x, y, z)}
+        NORTH, NORTH_EAST, NORTH_WEST, NORTH_NORTH_EAST, NORTH_NORTH_WEST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, y, -x)}
+        SOUTH, SOUTH_EAST, SOUTH_WEST, SOUTH_SOUTH_EAST, SOUTH_SOUTH_WEST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, y, x)}
+        else -> null
     }
 
     // 対象のブロックが自分の足元より高い位置にあるか
