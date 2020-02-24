@@ -1,7 +1,6 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
-import org.bukkit.block.BlockFace
 import org.bukkit.block.BlockFace.*
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.Damageable
