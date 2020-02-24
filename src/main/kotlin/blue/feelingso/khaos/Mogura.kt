@@ -39,25 +39,18 @@ class Mogura(private val executor: Player, private val block: Block, private val
         // 対象になるブロックをここに格納する
         val targetBlocks = mutableListOf<Block>()
 
+        val getRelative = when (compass) {
+            Compass.EAST -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(x, y, z)}
+            Compass.WEST -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(-x, y, z)}
+            Compass.NORTH -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, y, -x)}
+            Compass.SOUTH -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, y, x)}
+        }
+
         for (i in 1 - conf.radius until conf.radius) {
             for (j in 1 - conf.radius until conf.radius) {
                 for (k in conf.near until conf.far)
                 {
-                    val targetBlock =
-                            when (compass) {
-                                Compass.EAST -> {
-                                    block.getRelative(k, i, j)
-                                }
-                                Compass.WEST -> {
-                                    block.getRelative(-k, i, j)
-                                }
-                                Compass.NORTH -> {
-                                    block.getRelative(j, i, -k)
-                                }
-                                Compass.SOUTH -> {
-                                    block.getRelative(j, i, k)
-                                }
-                            }
+                    val targetBlock = getRelative(block, i, j, k)
 
                     if (canDigBlock(targetBlock)) {
                         targetBlocks.add(targetBlock)
