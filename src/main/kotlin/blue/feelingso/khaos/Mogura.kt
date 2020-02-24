@@ -1,12 +1,13 @@
 package blue.feelingso.khaos
 
 import org.bukkit.block.Block
+import org.bukkit.block.BlockFace.*
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import kotlin.math.absoluteValue
+import org.bukkit.scheduler.BukkitRunnable
 import kotlin.math.ceil
 
 /**
@@ -14,49 +15,21 @@ import kotlin.math.ceil
  *
  */
 
-class Mogura(private val executor: Player, private val block: Block, private val tool: ItemStack, private val conf: KhaosConfig) {
+class Mogura(private val executor: Player, private val block: Block, private val tool: ItemStack, private val conf: KhaosConfig): BukkitRunnable() {
     private val blockTypes = conf.getAllowedItems(tool.type)
-    val runnable = blockTypes.contains(block.type.toString())
+    val isRunnable = blockTypes.contains(block.type.toString())
 
-    fun run() {
-        // 向いている向きとradius設定から破壊する範囲を設定し
-        val direction = executor.eyeLocation.direction.normalize()
-
-        // 方位を取得する
-        // x軸が東西，z軸が南北
-        val compass =
-                if (direction.z.absoluteValue > direction.x.absoluteValue)
-                    if (direction.z < 0)
-                        Compass.NORTH
-                    else
-                        Compass.SOUTH
-                else
-                    if (direction.x < 0)
-                        Compass.WEST
-                    else Compass.EAST
+    override fun run() {
+        // 向いている向きから、getRelative関数を定める -> nullの場合returnする
+        val getRelative = makeGetRelativeFunc() ?: return
 
         // 対象になるブロックをここに格納する
         val targetBlocks = mutableListOf<Block>()
 
         for (i in 1 - conf.radius until conf.radius) {
             for (j in 1 - conf.radius until conf.radius) {
-                for (k in conf.near until conf.far)
-                {
-                    val targetBlock =
-                            when (compass) {
-                                Compass.EAST -> {
-                                    block.getRelative(k, i, j)
-                                }
-                                Compass.WEST -> {
-                                    block.getRelative(-k, i, j)
-                                }
-                                Compass.NORTH -> {
-                                    block.getRelative(j, i, -k)
-                                }
-                                Compass.SOUTH -> {
-                                    block.getRelative(j, i, k)
-                                }
-                            }
+                for (k in conf.near until conf.far) {
+                    val targetBlock = getRelative(block, i, j, k)
 
                     if (canDigBlock(targetBlock)) {
                         targetBlocks.add(targetBlock)
@@ -80,6 +53,19 @@ class Mogura(private val executor: Player, private val block: Block, private val
         if (damageable.damage > tool.type.maxDurability) {
             executor.inventory.remove(tool)
         }
+    }
+
+    // プレイヤの向きから、getRelative関数を定める
+    private fun makeGetRelativeFunc(): ((Block, Int, Int, Int) -> Block)? = when(executor.facing) {
+        EAST, EAST_NORTH_EAST, EAST_SOUTH_EAST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, x, y)}
+        WEST, WEST_NORTH_WEST, WEST_SOUTH_WEST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(-z, x, y)}
+        NORTH, NORTH_EAST, NORTH_WEST, NORTH_NORTH_EAST, NORTH_NORTH_WEST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(y, x, -z)}
+        SOUTH, SOUTH_EAST, SOUTH_WEST, SOUTH_SOUTH_EAST, SOUTH_SOUTH_WEST
+        -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(y, x, z)}
+        else -> null
     }
 
     // 対象のブロックが自分の足元より高い位置にあるか
