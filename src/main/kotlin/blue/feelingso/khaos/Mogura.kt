@@ -17,7 +17,7 @@ import kotlin.math.ceil
 
 class Mogura(private val executor: Player, private val block: Block, private val tool: ItemStack, private val conf: KhaosConfig): BukkitRunnable() {
     private val blockTypes = conf.getAllowedItems(tool.type)
-    val runnable = blockTypes.contains(block.type.toString())
+    val isRunnable = blockTypes.contains(block.type.toString())
 
     override fun run() {
         // 向いている向きとradius設定から破壊する範囲を設定し

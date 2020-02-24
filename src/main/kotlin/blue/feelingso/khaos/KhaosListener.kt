@@ -34,7 +34,7 @@ class KhaosListener(khaos :Khaos) : Listener {
 
         val mogura = Mogura(player, ev.block, tool, conf)
 
-        if (!mogura.runnable) return
+        if (!mogura.isRunnable) return
 
         mogura.run()
     }
