@@ -6,6 +6,7 @@ import org.bukkit.inventory.meta.Damageable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.scheduler.BukkitRunnable
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
@@ -14,11 +15,11 @@ import kotlin.math.ceil
  *
  */
 
-class Mogura(private val executor: Player, private val block: Block, private val tool: ItemStack, private val conf: KhaosConfig) {
+class Mogura(private val executor: Player, private val block: Block, private val tool: ItemStack, private val conf: KhaosConfig): BukkitRunnable() {
     private val blockTypes = conf.getAllowedItems(tool.type)
     val runnable = blockTypes.contains(block.type.toString())
 
-    fun run() {
+    override fun run() {
         // 向いている向きとradius設定から破壊する範囲を設定し
         val direction = executor.eyeLocation.direction.normalize()
 
