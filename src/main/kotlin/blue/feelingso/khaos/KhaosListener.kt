@@ -36,7 +36,7 @@ class KhaosListener(khaos :Khaos) : Listener {
 
         if (!mogura.isRunnable) return
 
-        mogura.run()
+        mogura.runTaskAsynchronously(khaos)
     }
 
     @EventHandler
