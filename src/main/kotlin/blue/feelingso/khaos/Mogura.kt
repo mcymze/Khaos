@@ -9,7 +9,6 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.scheduler.BukkitRunnable
-import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
 /**
@@ -22,31 +21,11 @@ class Mogura(private val executor: Player, private val block: Block, private val
     val isRunnable = blockTypes.contains(block.type.toString())
 
     override fun run() {
-        // 向いている向きとradius設定から破壊する範囲を設定し
-        val direction = executor.eyeLocation.direction.normalize()
-
-        // 方位を取得する
-        // x軸が東西，z軸が南北
-        val compass =
-                if (direction.z.absoluteValue > direction.x.absoluteValue)
-                    if (direction.z < 0)
-                        Compass.NORTH
-                    else
-                        Compass.SOUTH
-                else
-                    if (direction.x < 0)
-                        Compass.WEST
-                    else Compass.EAST
+        // 向いている向きから、getRelative関数を定める -> nullの場合returnする
+        val getRelative = makeGetRelativeFunc() ?: return
 
         // 対象になるブロックをここに格納する
         val targetBlocks = mutableListOf<Block>()
-
-        val getRelative = when (compass) {
-            Compass.EAST -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(x, y, z)}
-            Compass.WEST -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(-x, y, z)}
-            Compass.NORTH -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, y, -x)}
-            Compass.SOUTH -> { block: Block, x: Int, y: Int, z: Int -> block.getRelative(z, y, x)}
-        }
 
         for (i in 1 - conf.radius until conf.radius) {
             for (j in 1 - conf.radius until conf.radius) {
