@@ -29,8 +29,7 @@ class Mogura(private val executor: Player, private val block: Block, private val
 
         for (i in 1 - conf.radius until conf.radius) {
             for (j in 1 - conf.radius until conf.radius) {
-                for (k in conf.near until conf.far)
-                {
+                for (k in conf.near until conf.far) {
                     val targetBlock = getRelative(block, i, j, k)
 
                     if (canDigBlock(targetBlock)) {
